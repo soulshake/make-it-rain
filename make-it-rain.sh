@@ -34,6 +34,20 @@ declare -a text=(
 "                                                                                                                                                                                       "
 )
 
+# Raining Blood from slayer!!
+song=z8ZqFlw6hYg
+format=mp3
+
+# Create a temporary file to find out where is the temporary folder
+tmp_file=$(mktemp)
+rm ${tmp_file}
+tmp_dir=$(dirname ${tmp_file})
+
+# Download the song from Youtube and store it in the temporary file
+youtube-dl --extract-audio --audio-format ${format} --output "${tmp_dir}/%(id)s.%(ext)s" "https://www.youtube.com/watch?v=${song}" > /dev/null
+
+# Playing 10s of the song (not from the beginning)
+cvlc --start-time=32.5 --run-time=2 --play-and-exit ${tmp_dir}/${song}.${format} 2> /dev/null &
 
 # reverse so we can rain down the overengineering
 reverse text
